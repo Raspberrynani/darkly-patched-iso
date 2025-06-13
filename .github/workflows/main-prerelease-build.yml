@@ -27,30 +27,36 @@ jobs:
           mkdir -p iso-root/casper
           sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs -noappend -always-use-fragments
 
-      - name: Generate a dynamic ISO name
-        # Using the short commit hash for a unique filename
-        run: echo "ISO_NAME=darkly-main-${{ github.sha }}.iso" >> $GITHUB_ENV
+      - name: Generate dynamic names
+        run: |
+          # Generate ISO name with commit hash
+          echo "ISO_NAME=darkly-main-$(echo ${{ github.sha }} | cut -c1-8).iso" >> $GITHUB_ENV
+          # Generate tag name with timestamp (using valid characters only)
+          echo "TAG_NAME=nightly-$(date -u +'%Y.%m.%d-%H%M%S')" >> $GITHUB_ENV
 
       - name: Build the bootable ISO
         run: |
           mkisofs -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           -o ${{ env.ISO_NAME }} iso-root/
-          
-      - name: Generate a dynamic tag name
-        # This creates a readable, valid tag like "nightly-2025.06.13-045329" (in UTC time)
-        run: echo "TAG_NAME=nightly-$(date -u +'%Y.%m.%d-%H%M%S')" >> $GITHUB_ENV
 
       - name: Create Pre-release
         uses: softprops/action-gh-release@v2
         with:
           # This marks the release as a 'Pre-release' in GitHub
           prerelease: true
-          # Creates a unique tag for each build based on date and time
-          tag_name: nightly-${{ env.GITHUB_RUN_ID }}
-          name: "Nightly Build (main @ ${{ github.sha }})"
+          # Use the generated tag name consistently
+          tag_name: ${{ env.TAG_NAME }}
+          name: "Nightly Build - ${{ env.TAG_NAME }}"
           body: |
-            This is an automated build from the `main` branch.
-            Commit: ${{ github.sha }}
+            This is an automated nightly build from the `main` branch.
+            
+            **Build Details:**
+            - Commit: ${{ github.sha }}
+            - Branch: main
+            - Build Time: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+            
+            **Files:**
+            - `${{ env.ISO_NAME }}` - Custom ISO build
           files: |
             ${{ env.ISO_NAME }}
