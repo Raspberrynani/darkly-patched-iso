@@ -14,7 +14,7 @@ This patch probably fixes that junk so you have to solve the challenge the way i
 
 This is obviously **NOT** an official 42 project. They haven't sanctioned it, and they probably don't even know it exists.
 
-It's a proof of concept. For education. Whatever. Just **DO NOT** use this for any of your official evaluations42  or you'll probably get flagged. Don't say I didn't warn you.
+It's a proof of concept. For education. Whatever. Just **DO NOT** use this for any of your official projects or evaluations at 42 or you will get flagged. Don't say I didn't warn you.
 
 ## Getting the ISO
 
