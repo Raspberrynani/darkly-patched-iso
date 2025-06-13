@@ -1,0 +1,52 @@
+name: Automatic Pre-release Build
+
+# This workflow triggers on every push to the 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-create-prerelease:
+    name: Build ISO and Create Pre-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create a release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools genisoimage
+
+      - name: Create filesystem.squashfs
+        run: |
+          mkdir -p iso-root/casper
+          sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs -noappend -always-use-fragments
+
+      - name: Generate a dynamic ISO name
+        # Using the short commit hash for a unique filename
+        run: echo "ISO_NAME=darkly-main-${{ github.sha }}.iso" >> $GITHUB_ENV
+
+      - name: Build the bootable ISO
+        run: |
+          mkisofs -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
+          -no-emul-boot -boot-load-size 4 -boot-info-table \
+          -o ${{ env.ISO_NAME }} iso-root/
+
+      - name: Create Pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          # This marks the release as a 'Pre-release' in GitHub
+          prerelease: true
+          # Creates a unique tag for each build based on date and time
+          tag_name: nightly-${{ env.GITHUB_RUN_ID }}
+          name: "Nightly Build (main @ ${{ github.sha }})"
+          body: |
+            This is an automated build from the `main` branch.
+            Commit: ${{ github.sha }}
+          files: |
+            ${{ env.ISO_NAME }}
