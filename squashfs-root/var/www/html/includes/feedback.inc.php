@@ -90,7 +90,17 @@ if (isset($_POST['btnSign']) && isset($_POST['txtName']) && isset($_POST['mtxtMe
 	while ($rows = mysqli_fetch_array($result)) {
 		if (isset($rows['name']) && isset($rows['comment']))
 		{
-			if ((strstr("<script>", strtolower($rows['name'])) != FALSE) || (strstr("<script>", strtolower($rows['comment'])) != FALSE) || (strstr("alert", strtolower($rows['name']))!= FALSE) || (strstr("alert", strtolower($rows['comment']))!= False)){
+			$needle_sc = "<script>";
+			$needle_alert = "alert";
+			$haystack_comment = strtolower($rows['comment']));
+			$haystack_name = strtolower($rows['name']));
+
+			$res_1 = (strlen($haystack_script) > strlen($needle_name)) ? strstr($haystack_script, $needle_name) : FALSE
+			$res_2 = (strlen($haystack_script) > strlen($needle_comment)) ? strstr($haystack_script, $needle_comment) : FALSE
+			$res_3 = (strlen($haystack_alert) > strlen($needle_name)) ? strstr($haystack_alert, $needle_name) : FALSE
+			$res_4 = (strlen($haystack_alert) > strlen($needle_comment)) ? strstr($haystack_alert, $needle_comment) : FALSE
+				
+			if (($res_1 != FALSE) || ($res_2 != FALSE) || ($res_3)!= FALSE) || ($res_4)!= False)){
 					echo "<center><h2 style=\"margin-top:50px;\">The flag is : 0fbb54bbf7d099713ca4be297e1bc7da0173d8b3c21c1811b916a3a86652724e</h2><br/><img src=\"images/win.png\" alt=\"\" width=200px height=200px></center> ";
 				}
 			else {
