@@ -36,6 +36,10 @@ jobs:
           mkisofs -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           -o ${{ env.ISO_NAME }} iso-root/
+          
+      - name: Generate a dynamic tag name
+        # This creates a readable, valid tag like "nightly-2025.06.13-045329" (in UTC time)
+        run: echo "TAG_NAME=nightly-$(date -u +'%Y.%m.%d-%H%M%S')" >> $GITHUB_ENV
 
       - name: Create Pre-release
         uses: softprops/action-gh-release@v2
