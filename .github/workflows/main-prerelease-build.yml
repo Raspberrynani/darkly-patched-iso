@@ -69,20 +69,12 @@ jobs:
           name: "Nightly Build - ${{ env.TAG_NAME }}"
           body: |
             This is an automated nightly build from the `main` branch.
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> a18623bcd98f62366249e74058a633de8c72bb20
             **Build Details:**
             - Commit: ${{ github.sha }}
             - Branch: main
             - Build Time: ${{ env.BUILD_TIME }}
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> a18623bcd98f62366249e74058a633de8c72bb20
             **Files:**
             - `${{ env.ISO_NAME }}` - Custom ISO build
           files: |
