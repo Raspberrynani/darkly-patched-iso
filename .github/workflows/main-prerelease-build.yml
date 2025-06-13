@@ -71,6 +71,7 @@ jobs:
             This is an automated nightly build from the `main` branch.
 
             **Build Details:**
+            - Message: `${{ github.event.head_commit.message }}`
             - Commit: ${{ github.sha }}
             - Branch: main
             - Build Time: ${{ env.BUILD_TIME }}
