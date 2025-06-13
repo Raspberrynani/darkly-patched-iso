@@ -24,7 +24,12 @@ jobs:
 
       - name: Create filesystem.squashfs
         run: |
-          sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs -noappend -always-use-fragments
+          # Remove existing squashfs file to ensure clean build
+          sudo rm -f iso-root/casper/filesystem.squashfs
+          # Create squashfs without the problematic flags - match your working command exactly
+          sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs
+          # Fix permissions after sudo operation
+          sudo chown $USER:$USER iso-root/casper/filesystem.squashfs
 
       - name: Update MD5 Hashes
         run: |
