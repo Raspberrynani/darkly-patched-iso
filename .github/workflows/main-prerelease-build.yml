@@ -27,10 +27,18 @@ jobs:
           mkdir -p iso-root/casper
           sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs -noappend -always-use-fragments
 
+      - name: Update MD5 Hashes
+        run: |
+          cd iso-root
+          rm -f md5sum.txt
+          find . -type f -print0 | xargs -0 md5sum > md5sum.txt
+          sed -i '/md5sum.txt/d' md5sum.txt
+          cd ..
+
       - name: Generate dynamic names
         run: |
           # Generate ISO name with commit hash
-          echo "ISO_NAME=darkly-main-$(echo ${{ github.sha }} | cut -c1-8).iso" >> $GITHUB_ENV
+          echo "ISO_NAME=darkly-modified-prerelease-main-$(echo ${{ github.sha }} | cut -c1-8).iso" >> $GITHUB_ENV
           # Generate tag name with timestamp (using valid characters only)
           echo "TAG_NAME=nightly-$(date -u +'%Y.%m.%d-%H%M%S')" >> $GITHUB_ENV
           # Generate build timestamp for release body
