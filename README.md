@@ -6,9 +6,9 @@ Fixing this thing so it's less of a joke.
 
 Because the original `Darkly.iso` from 42fr has some... issues. This whole thing started because the **"Weak Input Validation against XSS"** challenge was completely borked.
 
-The server-side validation was so bad you could get the flag with a stupidly simple bypass. You didn't even have to do the actual exploit. It's been like that for 6 years, so What's the point?
+The server-side validation was so bad you could get the flag with a stupidly simple bypass. You didn't even have to do the actual exploit. It's been like that for 6 years, so what's the point?
 
-This patch fixes that junk so you have to solve the challenge the way it was probably intended. Now it's a bit more logical and less of a waste of time.
+This patch probably fixes that junk so you have to solve the challenge the way it was probably intended. Now it's a bit more logical and less of a waste of time.
 
 ##  BY ODIN BY THOR, USE YOUR BRAIN!!!
 
