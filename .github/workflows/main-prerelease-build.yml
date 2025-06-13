@@ -33,6 +33,8 @@ jobs:
           echo "ISO_NAME=darkly-main-$(echo ${{ github.sha }} | cut -c1-8).iso" >> $GITHUB_ENV
           # Generate tag name with timestamp (using valid characters only)
           echo "TAG_NAME=nightly-$(date -u +'%Y.%m.%d-%H%M%S')" >> $GITHUB_ENV
+          # Generate build timestamp for release body
+          echo "BUILD_TIME=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
 
       - name: Build the bootable ISO
         run: |
@@ -54,7 +56,7 @@ jobs:
             **Build Details:**
             - Commit: ${{ github.sha }}
             - Branch: main
-            - Build Time: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+            - Build Time: ${{ env.BUILD_TIME }}
             
             **Files:**
             - `${{ env.ISO_NAME }}` - Custom ISO build
