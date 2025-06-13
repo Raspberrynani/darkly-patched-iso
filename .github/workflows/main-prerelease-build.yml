@@ -24,7 +24,6 @@ jobs:
 
       - name: Create filesystem.squashfs
         run: |
-          mkdir -p iso-root/casper
           sudo mksquashfs squashfs-root iso-root/casper/filesystem.squashfs -noappend -always-use-fragments
 
       - name: Update MD5 Hashes
